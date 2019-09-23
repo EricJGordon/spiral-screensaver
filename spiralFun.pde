@@ -5,15 +5,27 @@ void setup(){
   strokeWeight(2);
 }
 
-void spiral(float x, float y, float offset){
-  float centreX = 1000;    //mouseX + 121.5
-  float centreY = -200;       //mouseY - 85       TODO: need adjusting
-  float R = 0;
-  float G = 0;
-  float B = 25;
+void spiral(float x, float y, float offset, int style){
+  float R, G, B, centreX, centreY;
   float angle = PI/9;
   float tightness = 10;
   float num = 70;
+  
+  if (style == 1)
+  {
+  centreX = 1000;    
+  centreY = -200;  
+  R = 0;
+  G = 0;
+  B = 25;
+  }else{
+  centreX = mouseX + 280; //to make it roughly follow your pointer
+  centreY = mouseY -500;       //TODO: needs adjusting    
+  //Calculate centre based on starting point, then reverse engineer starting point inputs for given desired centre?       
+  R = 0;
+  G = 30;
+  B = 0;  
+  }
   for(int i=0; i<num ; i++){
      fill(R, G+((255 - G)/(num))*i, B+(3/3)*((255 - B)/(num))*i);
      strokeWeight(5-5*(i/num)); //line gets correspondingly narrower as it gets tighter and closer to the centre
@@ -46,5 +58,5 @@ void myArc(float centreX, float centreY, float angle, float xPos, float yPos, fl
 void draw(){
   background(0);
   strokeWeight(2);
-  spiral(3000, 1000, radians(degrees++));
+  spiral(3000, 1000, radians(degrees++), 0);
 }
