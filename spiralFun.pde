@@ -1,4 +1,6 @@
 int degrees = 0;
+int style = 0;
+int totalStyles = 4;
 
 void setup(){
   size(1920, 1080); 
@@ -12,21 +14,21 @@ void spiral(float x, float y, int preset){
   float tightness = 10;
   float num = 70;
   
-  if(preset == 1){
+  if(preset == 0){
   offset = radians(degrees++);
   centreX = 1000;    
   centreY = -200;  
   R = 0;
   G = 0;
   B = 25;
-  }else if(preset == 2){
+  }else if(preset == 1){
   offset = radians(degrees--);
   centreX = 1000;    
   centreY = -200;  
   R = 0;
   G = 0;
   B = 25;
-  }else if(preset == 3){
+  }else if(preset == 2){
   degrees+=2;
   offset = radians(degrees);
   centreX = 1000;    
@@ -78,5 +80,5 @@ void myArc(float centreX, float centreY, float angle, float xPos, float yPos, fl
 void draw(){
   background(0);
   strokeWeight(2);
-  spiral(3000, 1000, 1);
+  spiral(3000, 1000, ((style++)/200)%totalStyles);
 }
