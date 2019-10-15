@@ -1,10 +1,13 @@
-int degrees = 0;
-int style = 0;
-int totalStyles = 4;
+int degrees;
+int style;
+int numOfStyles;
 
 void setup(){
   size(1920, 1080); 
   strokeWeight(2);
+  degrees = 0;
+  style = 0;
+  numOfStyles = 4;
 }
 
 void spiral(float x, float y, int preset){
@@ -15,20 +18,24 @@ void spiral(float x, float y, int preset){
   float num = 70;
   
   if(preset == 0){
+   preset = ((style++)/250)%numOfStyles + 1;   //250 corresponding to amount of delay, 
+  }                                // %numOfStyles to loop back to first style, +1 to make first style 1 instead of 0
+  
+  if(preset == 1){
   offset = radians(degrees++);
   centreX = 1000;    
   centreY = -200;  
   R = 0;
   G = 0;
   B = 25;
-  }else if(preset == 1){
+  }else if(preset == 2){
   offset = radians(degrees--);
   centreX = 1000;    
   centreY = -200;  
   R = 0;
   G = 0;
   B = 25;
-  }else if(preset == 2){
+  }else if(preset == 3){
   degrees+=2;
   offset = radians(degrees);
   centreX = 1000;    
@@ -80,5 +87,6 @@ void myArc(float centreX, float centreY, float angle, float xPos, float yPos, fl
 void draw(){
   background(0);
   strokeWeight(2);
-  spiral(3000, 1000, ((style++)/200)%totalStyles);
+  spiral(3000, 1000, 0);
+  //style parameter 0 reserved for showing a cycle of styles, 
 }
