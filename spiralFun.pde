@@ -7,12 +7,13 @@ void setup(){
   strokeWeight(2);
   degrees = 0;
   style = 0;
-  numOfStyles = 4;
+  numOfStyles = 6;
 }
 
 void spiral(float x, float y, int preset){
   float offset;
   float R, G, B, centreX, centreY;
+  float rateChangeR = 0, rateChangeG = 1, rateChangeB = 1;
   float angle = PI/9;
   float tightness = 10;
   float num = 70;
@@ -43,22 +44,44 @@ void spiral(float x, float y, int preset){
   R = 0;
   G = 0;
   B = 25;
+  }else if(preset == 4){
+  degrees+=1;
+  offset = radians(degrees);
+  centreX = 1000;    
+  centreY = -200;  
+  R = 0;
+  G = 0;
+  B = 0;
+  rateChangeR = 1;
+  rateChangeG = 0.8;
+  rateChangeB = 0;
+  }else if(preset == 5){
+  degrees+=1;
+  offset = radians(degrees);
+  centreX = 1000;    
+  centreY = -200;  
+  R = 0;
+  G = 0;
+  B = 0;
+  rateChangeR = 0.7;
+  rateChangeG = 0.2;
   }else{
   offset = radians(degrees++);
   centreX = mouseX + 280; //to make it roughly follow your pointer
   centreY = mouseY -500;       //TODO: needs adjusting    
   //Calculate centre based on starting point, then reverse engineer starting point inputs for given desired centre?       
   R = 0;
-  G = 30;
+  G = 20;
   B = 0;  
+  rateChangeB = 0.2;
+  rateChangeG = 0.75;
+  rateChangeR = 0.95;
   }
   
-  //TODO: Include the below colour transitioning logic into what a preset style can affect
-  
   for(int i=0; i<num ; i++){
-     fill(R, G+((255 - G)/(num))*i, B+(3/3)*((255 - B)/(num))*i);
+     fill(R+rateChangeR*((255-R)/num)*i, G+rateChangeG*((255 - G)/num)*i, B+rateChangeB*((255 - B)/num)*i);
      strokeWeight(5-5*(i/num)); //line gets correspondingly narrower as it gets tighter and closer to the centre
-     stroke(R, G+((255 - G)/(num))*i, B+(3/3)*((255 - B)/(num))*i); 
+     stroke(R+rateChangeR*((255-R)/num*i), G+rateChangeG*((255 - G)/num)*i, B+rateChangeB*((255 - B)/num)*i); 
      //above line is optional/personal preference - makes curved border of each wedge the same colour as its wedge
      myArc(centreX, centreY, angle, x, y, offset);
      float newX = centreX + ((x-centreX)*cos(angle)-(y-centreY)*sin(angle));
