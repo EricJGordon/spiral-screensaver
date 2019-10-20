@@ -11,71 +11,45 @@ void setup(){
 }
 
 void spiral(float x, float y, int preset){
-  float offset;
-  float R, G, B, centreX, centreY;
+  float offset = radians(degrees);
+  float R = 0, G = 0, B = 25; 
+  float centreX = 1000, centreY = -200;
   float rateChangeR = 0, rateChangeG = 1, rateChangeB = 1;
   float angle = PI/9;
   float tightness = 10;
   float num = 70;
   
   if(preset == 0){
-   preset = ((style++)/250)%numOfStyles + 1;   //250 corresponding to amount of delay, 
-  }                                // %numOfStyles to loop back to first style, +1 to make first style 1 instead of 0
+    preset = ((style++)/250)%numOfStyles + 1;   //250 corresponding to amount of delay, 
+  }                                    // %numOfStyles to loop back to first style, +1 to make first style 1 instead of 0
   
-  if(preset == 1){
-  offset = radians(degrees++);
-  centreX = 1000;    
-  centreY = -200;  
-  R = 0;
-  G = 0;
-  B = 25;
+  if(preset == 1){                      
+    degrees++;
   }else if(preset == 2){
-  offset = radians(degrees--);
-  centreX = 1000;    
-  centreY = -200;  
-  R = 0;
-  G = 0;
-  B = 25;
+    degrees--;
   }else if(preset == 3){
-  degrees+=2;
-  offset = radians(degrees);
-  centreX = 1000;    
-  centreY = -200;  
-  R = 0;
-  G = 0;
-  B = 25;
+    degrees+=2;
   }else if(preset == 4){
-  degrees+=1;
-  offset = radians(degrees);
-  centreX = 1000;    
-  centreY = -200;  
-  R = 0;
-  G = 0;
-  B = 0;
-  rateChangeR = 1;
-  rateChangeG = 0.8;
-  rateChangeB = 0;
+    degrees++;
+    B = 0;
+    rateChangeR = 1;
+    rateChangeG = 0.8;
+    rateChangeB = 0;
   }else if(preset == 5){
-  degrees+=1;
-  offset = radians(degrees);
-  centreX = 1000;    
-  centreY = -200;  
-  R = 0;
-  G = 0;
-  B = 0;
-  rateChangeR = 0.7;
-  rateChangeG = 0.2;
+    degrees++;
+    B = 0;
+    rateChangeR = 0.7;
+    rateChangeG = 0.2;
   }else{
-  offset = radians(degrees++);
-  centreX = mouseX + 280; //to make it roughly follow your pointer
-  centreY = mouseY -500;       //TODO: needs adjusting    
-  //Calculate centre based on starting point, then reverse engineer starting point inputs for given desired centre?       
-  R = 0;
-  G = 20;
-  B = 0;  
-  rateChangeB = 0.2;
-  rateChangeG = 0.75;
-  rateChangeR = 0.95;
+    degrees++;
+    centreX = mouseX + 280; //to make it roughly follow your pointer
+    centreY = mouseY -500;       //TODO: needs adjusting    
+    //Calculate centre based on starting point, then reverse engineer starting point inputs for given desired centre?       
+    G = 20;
+    B = 0;  
+    rateChangeB = 0.2;
+    rateChangeG = 0.75;
+    rateChangeR = 0.95;
   }
   
   for(int i=0; i<num ; i++){
