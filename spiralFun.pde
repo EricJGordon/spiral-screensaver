@@ -7,20 +7,21 @@ void setup(){
   strokeWeight(2);
   degrees = 0;
   style = 0;
-  numOfStyles = 6;
+  numOfStyles = 7;
 }
 
 void spiral(float x, float y, int preset){
   float offset = radians(degrees);
   float R = 0, G = 0, B = 25; 
-  float centreX = 1000, centreY = -200;
+  float centreX = 1000, centreY = -200;  //default values
+  //float centreX = 1200, centreY = -20;    //executable 
   float rateChangeR = 0, rateChangeG = 1, rateChangeB = 1;
   float angle = PI/9;
   float tightness = 10;
   float num = 70;
   
   if(preset == 0){
-    preset = ((style++)/250)%numOfStyles + 1;   //250 corresponding to amount of delay, 
+    preset = ((style++)/400)%numOfStyles + 1;   //400 corresponding to amount of delay, 
   }                                    // %numOfStyles to loop back to first style, +1 to make first style 1 instead of 0
   
   if(preset == 1){                      
@@ -30,12 +31,14 @@ void spiral(float x, float y, int preset){
   }else if(preset == 3){
     degrees+=2;
   }else if(preset == 4){
-    degrees++;
+    degrees+=4;
+  }else if(preset == 5){
+    degrees+=2;
     B = 0;
     rateChangeR = 1;
     rateChangeG = 0.8;
     rateChangeB = 0;
-  }else if(preset == 5){
+  }else if(preset == 6){
     degrees++;
     B = 0;
     rateChangeR = 0.7;
@@ -47,21 +50,36 @@ void spiral(float x, float y, int preset){
     //Calculate centre based on starting point, then reverse engineer starting point inputs for given desired centre?       
     G = 20;
     B = 0;  
-    rateChangeB = 0.2;
+    rateChangeB = 0.3;
     rateChangeG = 0.75;
     rateChangeR = 0.95;
   }
   
+  //float prev = 0;
+  
+  float oldR = R, oldG = G, oldB = B;
+
+  //refactor?
+
   for(int i=0; i<num ; i++){
-     fill(R+rateChangeR*((255-R)/num)*i, G+rateChangeG*((255 - G)/num)*i, B+rateChangeB*((255 - B)/num)*i);
+     //fill(R+rateChangeR*((255-R)/num*i), G+rateChangeG*((255 - G)/num*i), B+rateChangeB*((255 - B)/num)*i); 
+     fill(R+=rateChangeR*(255/num), G+=rateChangeG*(255/num), B+=rateChangeB*(255/num));
+     //System.out.println(G);
+     //System.out.println(G-prev);
+     //System.out.println(oldG+rateChangeG*((255 - 0)/num)*i);
+     //prev = G;
+
      strokeWeight(5-5*(i/num)); //line gets correspondingly narrower as it gets tighter and closer to the centre
-     stroke(R+rateChangeR*((255-R)/num*i), G+rateChangeG*((255 - G)/num)*i, B+rateChangeB*((255 - B)/num)*i); 
+     stroke(oldR+rateChangeR*((255-0)/num*i), oldG+rateChangeG*((255 - 0)/num*i), oldB+rateChangeB*((255 - 0)/num)*i); 
      //above line is optional/personal preference - makes curved border of each wedge the same colour as its wedge
      myArc(centreX, centreY, angle, x, y, offset);
      float newX = centreX + ((x-centreX)*cos(angle)-(y-centreY)*sin(angle));
      float newY = centreY + ((y-centreY)*cos(angle)+(x-centreX)*sin(angle)); 
      x = newX;
      y = newY;
+     //Combine and replace the above 4 lines into the 2 below for elliptical weirdness
+     // x = centreX + ((x-centreX)*cos(angle)-(y-centreY)*sin(angle));
+     // y = centreY + ((y-centreY)*cos(angle)+(x-centreX)*sin(angle)); 
      centreX = (x + (centreX*tightness))/(tightness+1);
      centreY = (y + (centreY*tightness))/(tightness+1);
   }
@@ -84,6 +102,14 @@ void myArc(float centreX, float centreY, float angle, float xPos, float yPos, fl
 void draw(){
   background(0);
   strokeWeight(2);
+  
+  //centred for default window:
   spiral(3000, 1000, 0);
+  
+  //centred for 1920x1080 fullscreen executable application
+  //spiral(3200, 1180, 0);
+  //whichever one you're using, 
+  //make sure you have the corresponding centreX centreY values in spiral
+  
   //style parameter 0 reserved for showing a cycle of styles, 
 }
