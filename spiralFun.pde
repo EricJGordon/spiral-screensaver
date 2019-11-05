@@ -7,7 +7,7 @@ void setup(){
   strokeWeight(2);
   degrees = 0;
   style = 0;
-  numOfStyles = 7;
+  numOfStyles = 8;
 }
 
 void spiral(float x, float y, int preset){
@@ -43,6 +43,47 @@ void spiral(float x, float y, int preset){
     B = 0;
     rateChangeR = 0.7;
     rateChangeG = 0.2;
+  }else if(preset == 7){
+    degrees++;
+    R = 255;
+    B = 0;
+    float eachTransition = num/4;  //divisor can be changed to 5 to end at magenta or 6 to loop back to red.
+    float colourInc = 255/eachTransition;
+    rateChangeB = 0;
+    rateChangeG = colourInc;
+    
+    for(int i=0; i<num ; i++){
+      
+      System.out.println(i);
+      
+      if(i>=eachTransition*5){
+        rateChangeR = 0;
+        rateChangeG = -colourInc;
+      }else if(i>=eachTransition*4){
+        rateChangeG = 0;
+        rateChangeR = colourInc;
+      }else if(i>=eachTransition*3){
+        rateChangeB = 0;
+        rateChangeG = -colourInc;
+      }else if(i>=eachTransition*2){
+        rateChangeR = 0;
+        rateChangeB = colourInc;
+      }else if(i>=eachTransition){
+        rateChangeG = 0;
+        rateChangeR = -colourInc;
+      }
+
+     fill((R+=rateChangeR)*0.85, (G+=rateChangeG)*0.85, (B+=rateChangeB)*0.85); //was a little too bright without the *0.85 modifier
+     strokeWeight(5-5*(i/num)); //line gets correspondingly narrower as it gets tighter and closer to the centre
+     stroke(R*0.95, G*0.95, B*0.95);   
+     myArc(centreX, centreY, angle, x, y, offset);
+     float newX = centreX + ((x-centreX)*cos(angle)-(y-centreY)*sin(angle));
+     float newY = centreY + ((y-centreY)*cos(angle)+(x-centreX)*sin(angle)); 
+     x = newX;
+     y = newY;
+     centreX = (x + (centreX*tightness))/(tightness+1);
+     centreY = (y + (centreY*tightness))/(tightness+1);
+     }
   }else{
     degrees++;
     centreX = mouseX + 280; //to make it roughly follow your pointer
@@ -54,6 +95,8 @@ void spiral(float x, float y, int preset){
     rateChangeG = 0.75;
     rateChangeR = 0.95;
   }
+  
+  if (preset != 7){
   
   //float prev = 0;
   
@@ -82,6 +125,7 @@ void spiral(float x, float y, int preset){
      // y = centreY + ((y-centreY)*cos(angle)+(x-centreX)*sin(angle)); 
      centreX = (x + (centreX*tightness))/(tightness+1);
      centreY = (y + (centreY*tightness))/(tightness+1);
+    }
   }
 }
 
@@ -104,7 +148,7 @@ void draw(){
   strokeWeight(2);
   
   //centred for default window:
-  spiral(3000, 1000, 0);
+  spiral(3000, 1000, 7);
   
   //centred for 1920x1080 fullscreen executable application
   //spiral(3200, 1180, 0);
