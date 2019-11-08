@@ -7,7 +7,7 @@ void setup(){
   strokeWeight(2);
   degrees = 0;
   style = 0;
-  numOfStyles = 8;
+  numOfStyles = 10;
 }
 
 void spiral(float x, float y, int preset){
@@ -21,7 +21,7 @@ void spiral(float x, float y, int preset){
   float num = 70;
   
   if(preset == 0){
-    preset = ((style++)/400)%numOfStyles + 1;   //400 corresponding to amount of delay, 
+    preset = ((style++)/200)%numOfStyles + 1;   //400 corresponding to amount of delay, 
   }                                    // %numOfStyles to loop back to first style, +1 to make first style 1 instead of 0
   
   if(preset == 1){                      
@@ -53,9 +53,7 @@ void spiral(float x, float y, int preset){
     rateChangeG = colourInc;
     
     for(int i=0; i<num ; i++){
-      
-      System.out.println(i);
-      
+            
       if(i>=eachTransition*5){
         rateChangeR = 0;
         rateChangeG = -colourInc;
@@ -73,7 +71,7 @@ void spiral(float x, float y, int preset){
         rateChangeR = -colourInc;
       }
 
-     fill((R+=rateChangeR)*0.85, (G+=rateChangeG)*0.85, (B+=rateChangeB)*0.85); //was a little too bright without the *0.85 modifier
+     fill((R+=rateChangeR)*0.9, (G+=rateChangeG)*0.9, (B+=rateChangeB)*0.9); //was a little too bright without the *0.85 modifier
      strokeWeight(5-5*(i/num)); //line gets correspondingly narrower as it gets tighter and closer to the centre
      stroke(R*0.95, G*0.95, B*0.95);   
      myArc(centreX, centreY, angle, x, y, offset);
@@ -84,6 +82,17 @@ void spiral(float x, float y, int preset){
      centreX = (x + (centreX*tightness))/(tightness+1);
      centreY = (y + (centreY*tightness))/(tightness+1);
      }
+  }else if(preset == 8){
+    degrees++;
+    centreX = 800;
+    rateChangeB = 2;
+  }else if(preset == 9){
+    degrees++;
+    centreX = 800;
+    centreY = 100;
+    rateChangeB = 0.3;
+    rateChangeG = 1.8;
+    rateChangeR = 0.6;
   }else{
     degrees++;
     centreX = mouseX + 280; //to make it roughly follow your pointer
@@ -116,15 +125,20 @@ void spiral(float x, float y, int preset){
      stroke(oldR+rateChangeR*((255-0)/num*i), oldG+rateChangeG*((255 - 0)/num*i), oldB+rateChangeB*((255 - 0)/num)*i); 
      //above line is optional/personal preference - makes curved border of each wedge the same colour as its wedge
      myArc(centreX, centreY, angle, x, y, offset);
+     if(preset!=8){
      float newX = centreX + ((x-centreX)*cos(angle)-(y-centreY)*sin(angle));
      float newY = centreY + ((y-centreY)*cos(angle)+(x-centreX)*sin(angle)); 
      x = newX;
      y = newY;
-     //Combine and replace the above 4 lines into the 2 below for elliptical weirdness
-     // x = centreX + ((x-centreX)*cos(angle)-(y-centreY)*sin(angle));
-     // y = centreY + ((y-centreY)*cos(angle)+(x-centreX)*sin(angle)); 
+     }
+     //Combine and replace the above 4 lines into the 2 in the if block below for elliptical weirdness
+     if(preset == 8 || preset ==9){
+      x = centreX + ((x-centreX)*cos(angle)-(y-centreY)*sin(angle));
+      y = centreY + ((y-centreY)*cos(angle)+(x-centreX)*sin(angle)); 
+     }
      centreX = (x + (centreX*tightness))/(tightness+1);
      centreY = (y + (centreY*tightness))/(tightness+1);
+     
     }
   }
 }
@@ -148,7 +162,7 @@ void draw(){
   strokeWeight(2);
   
   //centred for default window:
-  spiral(3000, 1000, 7);
+  spiral(3000, 1000, 9);
   
   //centred for 1920x1080 fullscreen executable application
   //spiral(3200, 1180, 0);
